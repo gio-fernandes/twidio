@@ -9,7 +9,7 @@ import createConnection from './database'
 createConnection()
 const app = express()
 app.use(express.json())
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+app.use('/doc', swaggerUi.serve as any, swaggerUi.setup(swaggerDocs) as any)
 app.use('/v1', router)
 
 export { app }
