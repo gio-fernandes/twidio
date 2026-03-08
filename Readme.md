@@ -1,141 +1,195 @@
 # TwiDIO API
 
-#### API desenvolvida para o projeto TwiDIO
+API REST desenvolvida em **Node.js + TypeScript** utilizando
+**arquitetura em camadas (Controller → Service → Repository)** e **Test
+Driven Development (TDD)**.
 
-### Arquitetura
+Este projeto foi desenvolvido como parte de um desafio da **Digital
+Innovation One (DIO)** com o objetivo de praticar testes unitários e
+boas práticas de desenvolvimento backend.
 
-#### 📂Controllers
-> Aplica validações necessárias na requisição.
-#### 📂Services
-> Aplica regras de negócios antes de enviar ao repositório.
-#### 📂Repositories
-> Salva os dados no banco de dados.
-#### 📂Entities
-> Gerencia a estrutura das entidades da aplicação.
-#### 📂Database
-> Cria as conexões necessárias com o banco de dados.
+------------------------------------------------------------------------
 
-#### 📂__mocks __
-> Armazena os dados e mocks utilizados nos testes unitários.
-#### 📂tests
-> Armazena as switch de testes de integração.
+# Tecnologias utilizadas
 
+-   Node.js
+-   TypeScript
+-   Express
+-   TypeORM
+-   SQLite
+-   Jest
+-   Swagger
+-   TDD (Test Driven Development)
+
+------------------------------------------------------------------------
+
+# Arquitetura do projeto
+
+Estrutura principal:
+
+    src
+     ├── controllers
+     ├── services
+     ├── repositories
+     ├── entities
+     ├── database
+     ├── routes.ts
+     ├── app.ts
+     └── index.ts
+
+### Controllers
+
+Responsáveis por receber e responder requisições HTTP.
+
+### Services
+
+Contêm as regras de negócio da aplicação.
+
+### Repositories
+
+Responsáveis pela comunicação com o banco de dados.
+
+### Entities
+
+Definem os modelos de dados utilizados pelo TypeORM.
+
+------------------------------------------------------------------------
+
+# Instalação do projeto
+
+Clone o repositório:
+
+    git clone https://github.com/SEU-USUARIO/twidio.git
+
+Entre na pasta:
+
+    cd twidio
+
+Instale as dependências:
+
+    npm install
+
+------------------------------------------------------------------------
+
+# Executar o projeto
+
+Compile o TypeScript:
+
+    npx tsc
+
+Inicie o servidor:
+
+    node build/index.js
+
+A API será executada em:
+
+    http://localhost:5001
+
+------------------------------------------------------------------------
+
+# Documentação Swagger
+
+Acesse:
+
+    http://localhost:5001/doc
+
+------------------------------------------------------------------------
+
+# Endpoints da API
+
+## Criar Post
+
+POST
+
+    /v1/posts
+
+Body:
+
+``` json
+{
+  "author": "Gio",
+  "content": "Meu primeiro post"
+}
 ```
- 📁 TwiDIO
-   |
-   |-  📁 src
-   |    |
-   |    |- 📁 __mocks_
-   |         |- 📄 getEntityManagerMock.ts
-   |         |- 📄 mockContentList.ts
-   |         |- 📄 mockRequest.ts
-   |         |- 📄 mockResponse.ts
-   |
-   |    |- 📁 database
-   |         |- 📁 migrations
-   |         |- 📄 index.ts
-   |         |- 📄 database.sqlite
-   |         |- 📄 database.test.sqlite
-   |
-   |    |- 📁 controllers
-   |         |- 📄 GetAllPostController.ts
-   |         |- 📄 MessageController.ts
-   |
-   |    |- 📁 entities
-   |         |- 📄 Post.ts
-   |
-   |    |- 📁 repositories
-   |         |- 📄 PostRepository.ts
-   |
-   |    |- 📁 services
-   |         |- 📄 GetAllPostService.ts
-   |
-   |    |- 📁 tests
-   |         |- 📄 posts.test.ts
-   |
-   |
-   |- 📄 .gitignore
-   |- 📄 package.json
-   |- 📄 app.ts
-   |- 📄 index.ts
-   |- 📄 router.ts
 
+Exemplo curl:
+
+    curl -X POST http://localhost:5001/v1/posts -H "Content-Type: application/json" -d '{
+      "author": "Gio",
+      "content": "Meu primeiro post"
+    }'
+
+------------------------------------------------------------------------
+
+## Listar todos os posts
+
+GET
+
+    /v1/posts
+
+Exemplo:
+
+    curl http://localhost:5001/v1/posts
+
+------------------------------------------------------------------------
+
+## Buscar posts por autor
+
+GET
+
+    /v1/posts/author/:author
+
+Exemplo:
+
+    curl http://localhost:5001/v1/posts/author/Gio
+
+Resposta:
+
+``` json
+[
+  {
+    "post_id": "uuid",
+    "author": "Gio",
+    "content": "Meu primeiro post"
+  }
+]
 ```
 
-### Este projeto usa
-- Node
-- Typescript
-- Jest
-- SQLite
-- TypeORM
+------------------------------------------------------------------------
 
-### Como rodar o projeto
+## Deletar post
 
-1 - Clone o repositório
+DELETE
 
-2 - Instale todas as dependências
+    /v1/posts/:post_id
 
----
-    yarn install
----
+Exemplo:
 
-4 - Acesse a rota principal
+    curl -X DELETE http://localhost:5001/v1/posts/uuid
 
-<http://localhost:5000/v1/>
+Resposta esperada:
 
-### Testando o projeto
+    204 No Content
 
-#### Testes unitários
+------------------------------------------------------------------------
 
----
-    yarn test:unit
----
+# Executar testes
 
-#### Testes de integração
+    npm test
 
-1 - Rode a aplicação em modo de desenvolvimento
+------------------------------------------------------------------------
 
----
-    yarn run dev
----
+# Melhorias implementadas
 
-1 - Rode os testes de integração no repositório /tests
+-   Criação de posts
+-   Busca por autor
+-   Exclusão de posts
+-   Arquitetura em camadas
+-   Testes unitários com Jest
+-   Documentação com Swagger
 
----
-    yarn test:integration
----
+------------------------------------------------------------------------
 
-### endpoints
+# Autora
 
-**_GET_** /posts
-
-Retorna todos os posts criados no banco de dados
-
-##### Exemplo
-
----
-    http://localhost:5000/v1/posts
----
-
-**_POST_** /posts (em desenvolvimento)
-
-Cria um novo post no banco de dados. Todos os campos são obrigatórios
-
-##### Exemplo
-
----
-    body {
-        author: 'author@email.com',
-        content: 'Tuite de exemplo'
-    }
----
-
-**Desafios sugeridos**
-
-- Usando os conceitos de TDD
-
-[ ] Implementar uma rota que retorne todos os posts de um usuário
-
-[ ] Implementar uma rota que permita excluir um post
-
-### Happy hacking!
+Projeto desenvolvido por **Giovanna Fernandes**
