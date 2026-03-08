@@ -13,4 +13,13 @@ export class PostRepository {
       const posts: Post[] = await this.manager.find(Post)
       return posts
     }
+
+    findByAuthor = async (author: string): Promise<Array<Post>> => {
+  const posts: Post[] = await this.manager.find(Post, {
+    where: { author }
+  })
+
+  return posts
 }
+}
+
