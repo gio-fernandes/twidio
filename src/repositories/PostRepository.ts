@@ -10,16 +10,30 @@ export class PostRepository {
     }
 
     getAll = async (): Promise<Array<Post>> => {
-      const posts: Post[] = await this.manager.find(Post)
-      return posts
-    }
+  const posts: Post[] = await this.manager.find(Post)
+  return posts
+}
 
-    findByAuthor = async (author: string): Promise<Array<Post>> => {
+create = async ({ author, content }: { author: string; content: string }) => {
+  const post = this.manager.create(Post, {
+    author,
+    content
+  })
+
+  await this.manager.save(post)
+
+  return post
+}
+
+findByAuthor = async (author: string): Promise<Array<Post>> => {
   const posts: Post[] = await this.manager.find(Post, {
     where: { author }
   })
-
   return posts
+}
+
+deleteById = async (id: string): Promise<void> => {
+  await this.manager.delete(Post, { post_id: id })
 }
 }
 
